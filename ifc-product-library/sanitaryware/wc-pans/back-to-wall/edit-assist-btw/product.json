@@ -1,0 +1,69 @@
+{
+  "$schema": "https://example.com/ifc-product-library/v0.1/product.schema.json",
+  "schema_version": "0.1",
+
+  "identity": {
+    "name": "Edit Assist Back-to-Wall WC Pan (Rimless)",
+    "slug": "edit-assist-btw",
+    "description": "Back-to-wall rimless WC pan with horizontal outlet and washdown action. Designed for use with a concealed cistern back-to-wall unit. Seat not included.",
+    "manufacturer": "Armitage Shanks",
+    "model_number": "S0825",
+    "product_url": "https://www.idealspec.co.uk/catalogue/bluebook/"
+  },
+
+  "category": {
+    "path": "sanitaryware/wc-pans/back-to-wall",
+    "tags": ["commercial", "rimless", "contemporary"]
+  },
+
+  "ifc": {
+    "class": "IfcSanitaryTerminal",
+    "predefined_type": "TOILETPAN",
+    "ifc_version": "IFC2X3"
+  },
+
+  "classification": {
+    "uniclass_2015": {
+      "code": "Pr_40_20_93_94",
+      "description": "WC pans"
+    },
+    "omniclass": {
+      "code": "23-31 19 00",
+      "description": "Toilets"
+    }
+  },
+
+  "dimensions": {
+    "width_mm": 550,
+    "depth_mm": 360,
+    "height_mm": 460,
+    "weight_kg": 32.7,
+    "unit_system": "metric"
+  },
+
+  "properties": {
+    "material": "Ceramics",
+    "colour": "White",
+    "mounting": "Floor-standing",
+    "outlet": "Horizontal",
+    "rimless": true,
+    "flush_type": "Washdown",
+    "seat_included": false
+  },
+
+  "compliance": {
+    "doc_m": false,
+    "building_regs": [],
+    "standards": []
+  },
+
+  "provenance": {
+    "created_date": "2026-04-14",
+    "created_by": "Neil",
+    "geometry_source": "BIMobject / Armitage Shanks",
+    "geometry_licence": "BIMobject download — Armitage Shanks supplied geometry",
+    "ifc_authored_in": "BIMobject-Lena (IFC2X3, 2020-02-12)",
+    "last_modified": "2026-04-14",
+    "library_version": "0.1"
+  }
+}

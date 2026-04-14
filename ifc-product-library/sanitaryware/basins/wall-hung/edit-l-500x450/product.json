@@ -1,0 +1,68 @@
+{
+  "$schema": "https://example.com/ifc-product-library/v0.1/product.schema.json",
+  "schema_version": "0.1",
+
+  "identity": {
+    "name": "Edit L Wall-Hung Basin 500×450",
+    "slug": "edit-l-500x450",
+    "description": "Wall-hung washbasin in the Edit L Cube rectilinear range. 500mm wide × 450mm deep, single taphole. Supplied without taps.",
+    "manufacturer": "Armitage Shanks",
+    "model_number": "S0814",
+    "product_url": "https://www.idealspec.co.uk/catalogue/bluebook/"
+  },
+
+  "category": {
+    "path": "sanitaryware/basins/wall-hung",
+    "tags": ["commercial", "contemporary"]
+  },
+
+  "ifc": {
+    "class": "IfcSanitaryTerminal",
+    "predefined_type": "WASHHANDBASIN",
+    "ifc_version": "IFC2X3"
+  },
+
+  "classification": {
+    "uniclass_2015": {
+      "code": "Pr_40_20_96_96",
+      "description": "Wall-hung wash basins"
+    },
+    "omniclass": {
+      "code": "23-31 19 11",
+      "description": "Lavatories"
+    }
+  },
+
+  "dimensions": {
+    "width_mm": 500,
+    "depth_mm": 450,
+    "height_mm": 160,
+    "weight_kg": 12.08,
+    "unit_system": "metric"
+  },
+
+  "properties": {
+    "material": "Vitreous china",
+    "colour": "White",
+    "mounting": "Wall-hung",
+    "tap_holes": 1,
+    "overflow": true,
+    "outlet_diameter_mm": 32
+  },
+
+  "compliance": {
+    "doc_m": false,
+    "building_regs": [],
+    "standards": []
+  },
+
+  "provenance": {
+    "created_date": "2026-04-14",
+    "created_by": "Neil",
+    "geometry_source": "BIMobject / Armitage Shanks",
+    "geometry_licence": "BIMobject download — Armitage Shanks supplied geometry",
+    "ifc_authored_in": "BIMobject-Lena (IFC2X3, 2020-02-14)",
+    "last_modified": "2026-04-14",
+    "library_version": "0.1"
+  }
+}

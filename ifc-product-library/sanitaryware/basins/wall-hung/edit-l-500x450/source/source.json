@@ -1,0 +1,15 @@
+{
+  "original_filename": "Sanitary_Basins_Armitage-Shanks_EDIT-L-BASIN-50X45-WHITE-CUBE.ifc",
+  "source_platform": "BIMobject",
+  "source_url": "https://www.bimobject.com/armitage-shanks/product/S0814",
+  "manufacturer_url": "https://www.idealspec.co.uk/catalogue/bluebook/",
+  "download_date": "2026-04-14",
+  "licence": "BIMobject download — Armitage Shanks supplied geometry, personal/professional use",
+  "format": "IFC2X3",
+  "authoring_tool": "BIMobject-Lena",
+  "authored_date": "2020-02-14",
+  "conversion_tool": "None — used as downloaded",
+  "conversion_notes": "File placed directly into library. IFC2X3 schema; PredefinedType NOTDEFINED in file (corrected to WASHHANDBASIN in product.json). Omniclass code in BO pset was incorrect (23-39 29 13 21 19 — Surface Water Retention Basins); corrected to 23-31 19 11 (Lavatories) in product.json. No IfcClassificationReference entities present in file.",
+  "bimobject_product_guid": "b6c4786a-3c2c-4b9a-86fe-571e2a49a7eb",
+  "gtin": "5017830545675"
+}

@@ -1,0 +1,103 @@
+{
+  "name": "Neil's Practice Library",
+  "version": "0.1",
+  "description": "IFC product library for residential and accessible commercial projects",
+  "author": "Neil",
+  "licence": "CC BY 4.0",
+  "ifc_version_default": "IFC4",
+  "classification_system_default": "Uniclass 2015",
+  "created": "2026-04-14",
+  "categories": [
+    {
+      "path": "sanitaryware",
+      "label": "Sanitaryware",
+      "icon": "shower",
+      "subcategories": [
+        {
+          "path": "sanitaryware/basins",
+          "label": "Basins",
+          "subcategories": [
+            { "path": "sanitaryware/basins/wall-hung", "label": "Wall-Hung" },
+            { "path": "sanitaryware/basins/pedestal", "label": "Pedestal" },
+            { "path": "sanitaryware/basins/countertop", "label": "Countertop" },
+            { "path": "sanitaryware/basins/semi-recessed", "label": "Semi-Recessed" }
+          ]
+        },
+        {
+          "path": "sanitaryware/wc-pans",
+          "label": "WC Pans",
+          "subcategories": [
+            { "path": "sanitaryware/wc-pans/close-coupled", "label": "Close-Coupled" },
+            { "path": "sanitaryware/wc-pans/back-to-wall", "label": "Back-to-Wall" },
+            { "path": "sanitaryware/wc-pans/wall-hung", "label": "Wall-Hung" }
+          ]
+        },
+        { "path": "sanitaryware/baths", "label": "Baths" },
+        { "path": "sanitaryware/shower-trays", "label": "Shower Trays" },
+        { "path": "sanitaryware/urinals", "label": "Urinals" },
+        { "path": "sanitaryware/cisterns", "label": "Cisterns" }
+      ]
+    },
+    {
+      "path": "ironmongery",
+      "label": "Ironmongery",
+      "icon": "key",
+      "subcategories": [
+        { "path": "ironmongery/door-handles", "label": "Door Handles" },
+        { "path": "ironmongery/hinges", "label": "Hinges" },
+        { "path": "ironmongery/locks", "label": "Locks" },
+        { "path": "ironmongery/closers", "label": "Closers" }
+      ]
+    },
+    {
+      "path": "doors",
+      "label": "Doors",
+      "icon": "door-open",
+      "subcategories": [
+        { "path": "doors/internal", "label": "Internal" },
+        { "path": "doors/external", "label": "External" },
+        { "path": "doors/fire-rated", "label": "Fire-Rated" }
+      ]
+    },
+    {
+      "path": "windows",
+      "label": "Windows",
+      "icon": "grid-2x2",
+      "subcategories": [
+        { "path": "windows/casement", "label": "Casement" },
+        { "path": "windows/sash", "label": "Sash" },
+        { "path": "windows/rooflights", "label": "Rooflights" }
+      ]
+    },
+    {
+      "path": "insulation",
+      "label": "Insulation",
+      "icon": "layers",
+      "subcategories": [
+        { "path": "insulation/rigid-board", "label": "Rigid Board" },
+        { "path": "insulation/mineral-wool", "label": "Mineral Wool" },
+        { "path": "insulation/natural", "label": "Natural" }
+      ]
+    },
+    {
+      "path": "furniture",
+      "label": "Furniture",
+      "icon": "armchair",
+      "subcategories": [
+        { "path": "furniture/kitchen", "label": "Kitchen" },
+        { "path": "furniture/office", "label": "Office" },
+        { "path": "furniture/loose", "label": "Loose" }
+      ]
+    },
+    {
+      "path": "accessibility",
+      "label": "Accessibility",
+      "icon": "accessibility",
+      "subcategories": [
+        { "path": "accessibility/doc-m-packs", "label": "Doc M Packs" },
+        { "path": "accessibility/grab-rails", "label": "Grab Rails" },
+        { "path": "accessibility/accessible-wc", "label": "Accessible WC" }
+      ]
+    }
+  ]
+}

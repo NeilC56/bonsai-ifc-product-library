@@ -1,0 +1,15 @@
+{
+  "original_filename": "portman_21_55cm_pedestal_washbasin_2_taphole_with_overflow_chainhole.ifc",
+  "source_platform": "BIMobject",
+  "source_url": "https://www.bimobject.com/armitage-shanks/product/S2479",
+  "manufacturer_url": "https://www.idealspec.co.uk/assets/datasheet/S247901",
+  "download_date": "2026-04-14",
+  "licence": "BIMobject download — Armitage Shanks supplied geometry, personal/professional use",
+  "format": "IFC2X3",
+  "authoring_tool": "BIMobject-Lena",
+  "authored_date": "2017-03-29",
+  "conversion_tool": "None — used as downloaded",
+  "conversion_notes": "File placed directly into library. IFC2X3 schema; PredefinedType NOTDEFINED in file (corrected to WASHHANDBASIN in product.json). IfcBoundingBox present but values are 1000× too small due to a BIMobject-Lena unit conversion bug; actual dimensions taken from ePset_BIMobject_BO properties instead. Note: product is branded '55cm' but actual ceramic width is 547mm — product.json uses the measured 547mm. No IfcClassificationReference entities present in file. Geometry identical to S2478 (1-taphole variant) — taphole count difference is not visible in IFC2X3 FacetedBrep at this LOD.",
+  "bimobject_product_guid": "e40810eb-a99e-4492-b0c7-9b425a5e80f0",
+  "ean": "5017830411871"
+}

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://example.com/ifc-product-library/v0.1/product.schema.json",
+  "schema_version": "0.1",
+
+  "identity": {
+    "name": "Portman 21 Pedestal Washbasin 550mm — 1 Taphole",
+    "slug": "portman-21-550mm-1tap",
+    "description": "550mm pedestal washbasin with single central taphole and overflow. Traditional range. Basin only — matching pedestal ordered separately. Actual ceramic width 547mm.",
+    "manufacturer": "Armitage Shanks",
+    "model_number": "S2478",
+    "product_url": "https://www.idealspec.co.uk/assets/datasheet/S247801"
+  },
+
+  "category": {
+    "path": "sanitaryware/basins/pedestal",
+    "tags": ["traditional", "residential"]
+  },
+
+  "ifc": {
+    "class": "IfcSanitaryTerminal",
+    "predefined_type": "WASHHANDBASIN",
+    "ifc_version": "IFC2X3"
+  },
+
+  "classification": {
+    "uniclass_2015": {
+      "code": "Pr_40_20_96_63",
+      "description": "Pedestal wash basins"
+    },
+    "omniclass": {
+      "code": "23-31 13 00",
+      "description": "Sinks"
+    }
+  },
+
+  "dimensions": {
+    "width_mm": 547,
+    "depth_mm": 441,
+    "height_mm": 185,
+    "weight_kg": 13.8,
+    "unit_system": "metric"
+  },
+
+  "properties": {
+    "material": "Vitreous china",
+    "colour": "White",
+    "mounting": "Pedestal",
+    "tap_holes": 1,
+    "overflow": true,
+    "outlet_diameter_mm": 32,
+    "ean": "5017830411864"
+  },
+
+  "compliance": {
+    "doc_m": false,
+    "building_regs": [],
+    "standards": []
+  },
+
+  "provenance": {
+    "created_date": "2026-04-14",
+    "created_by": "Neil",
+    "geometry_source": "BIMobject / Armitage Shanks",
+    "geometry_licence": "BIMobject download — Armitage Shanks supplied geometry",
+    "ifc_authored_in": "BIMobject-Lena (IFC2X3, 2017-03-29)",
+    "last_modified": "2026-04-14",
+    "library_version": "0.1"
+  }
+}

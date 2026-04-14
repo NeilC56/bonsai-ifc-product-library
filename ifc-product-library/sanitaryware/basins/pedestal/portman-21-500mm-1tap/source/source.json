@@ -1,0 +1,15 @@
+{
+  "original_filename": "portman_21_50cm_pedestal_washbasin_1_taphole_with_overflow.ifc",
+  "source_platform": "BIMobject",
+  "source_url": "https://www.bimobject.com/armitage-shanks/product/S2481",
+  "manufacturer_url": "https://www.idealspec.co.uk/assets/datasheet/S248101",
+  "download_date": "2026-04-14",
+  "licence": "BIMobject download — Armitage Shanks supplied geometry, personal/professional use",
+  "format": "IFC2X3",
+  "authoring_tool": "BIMobject-Lena",
+  "authored_date": "2017-03-29",
+  "conversion_tool": "None — used as downloaded",
+  "conversion_notes": "File placed directly into library. IFC2X3 schema; PredefinedType NOTDEFINED in file (corrected to WASHHANDBASIN in product.json). IfcBoundingBox present but values are 1000× too small due to a BIMobject-Lena unit conversion bug (values stored as mm/1000 in a metre-unit file); actual dimensions taken from ePset_BIMobject_BO properties instead. No IfcClassificationReference entities present in file.",
+  "bimobject_product_guid": "528492d4-b512-4c32-a961-09af606cf48f",
+  "ean": "5017830411895"
+}
