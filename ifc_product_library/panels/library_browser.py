@@ -1,8 +1,20 @@
 """Main sidebar panel — the Product Library N-panel tab in the 3D Viewport."""
 
 import bpy
-from ..core import library_index
+from ..core import library_index, wizard_state
 from .. import _ADDON_ID   # full package name, safe for both dev and installed extension
+
+
+# ---------------------------------------------------------------------------
+# Shared panel redraw helper (imported by import_wizard.py too)
+# ---------------------------------------------------------------------------
+
+def _redraw_panels():
+    """Tag all VIEW_3D areas for redraw."""
+    for win in bpy.context.window_manager.windows:
+        for area in win.screen.areas:
+            if area.type == "VIEW_3D":
+                area.tag_redraw()
 
 
 # ---------------------------------------------------------------------------
@@ -175,6 +187,13 @@ class IFC_PT_ProductLibrary(bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
+
+        # ── Import Wizard takes over when active ──────────────────────────
+        if wizard_state.get_wizard()["active"]:
+            from .import_wizard import draw_wizard
+            draw_wizard(layout, context)
+            return
+
         index = library_index.get_index()
 
         # ── Draw-time lazy-load ────────────────────────────────────────────
@@ -313,6 +332,14 @@ class IFC_PT_ProductLibrary(bpy.types.Panel):
             "ifclib.insert_product",
             text="INSERT INTO MODEL",
             icon="IMPORT",
+        )
+
+        # ══ Add New Product button ════════════════════════════════════════
+        layout.separator(factor=0.3)
+        layout.operator(
+            "ifclib.start_wizard",
+            text="+ Add New Product",
+            icon="ADD",
         )
 
 

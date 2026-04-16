@@ -98,6 +98,33 @@
         { "path": "accessibility/grab-rails", "label": "Grab Rails" },
         { "path": "accessibility/accessible-wc", "label": "Accessible WC" }
       ]
+    },
+    {
+      "path": "structural",
+      "label": "Structural",
+      "icon": "columns",
+      "subcategories": [
+        {
+          "path": "structural/steel",
+          "label": "Steel",
+          "subcategories": [
+            { "path": "structural/steel/universal-beams",    "label": "Universal Beams" },
+            { "path": "structural/steel/universal-columns",  "label": "Universal Columns" },
+            { "path": "structural/steel/channels",           "label": "Channels" },
+            { "path": "structural/steel/angles",             "label": "Angles" },
+            { "path": "structural/steel/hollow-sections",    "label": "Hollow Sections" }
+          ]
+        },
+        { "path": "structural/timber", "label": "Timber" },
+        {
+          "path": "structural/concrete",
+          "label": "Concrete",
+          "subcategories": [
+            { "path": "structural/concrete/precast",  "label": "Precast" },
+            { "path": "structural/concrete/lintels",  "label": "Lintels" }
+          ]
+        }
+      ]
     }
   ]
 }

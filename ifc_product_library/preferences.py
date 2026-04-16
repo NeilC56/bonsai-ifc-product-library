@@ -40,9 +40,55 @@ class IFCProductLibraryPreferences(bpy.types.AddonPreferences):
         update=_on_library_path_changed,
     )
 
+    mayo_path: bpy.props.StringProperty(
+        name="Mayo Path",
+        description=(
+            "Path to the Mayo executable for converting STEP files to glTF. "
+            "Leave blank if Mayo is not installed."
+        ),
+        default="",
+        subtype="FILE_PATH",
+    )
+
+    small_part_threshold_mm: bpy.props.FloatProperty(
+        name="Small Part Threshold (mm)",
+        description=(
+            "Default threshold for 'Remove Small Parts' in the Import Wizard. "
+            "Objects with all dimensions below this are removed."
+        ),
+        default=5.0,
+        min=0.1,
+        max=500.0,
+        step=10,
+        precision=1,
+    )
+
+    bim_face_target: bpy.props.IntProperty(
+        name="Optimise Target Faces",
+        description=(
+            "Target face count when using 'Optimise for BIM'. "
+            "Lower = faster model, less geometric detail."
+        ),
+        default=4000,
+        min=500,
+        max=20000,
+    )
+
+    max_face_count: bpy.props.IntProperty(
+        name="Maximum Face Count",
+        description=(
+            "Hard limit on faces per product. Products exceeding this cannot "
+            "be saved to the library."
+        ),
+        default=50000,
+        min=1000,
+        max=500000,
+    )
+
     def draw(self, context):
         layout = self.layout
 
+        # ── Library location ─────────────────────────────────────────────
         layout.label(text="Library Location:")
         row = layout.row(align=True)
         row.prop(self, "library_path", text="")
@@ -61,3 +107,18 @@ class IFCProductLibraryPreferences(bpy.types.AddonPreferences):
             layout.label(text=f"  {index['error']}", icon="ERROR")
         else:
             layout.label(text="  Library not yet loaded.", icon="INFO")
+
+        layout.separator()
+
+        # ── STEP conversion ───────────────────────────────────────────────
+        layout.label(text="STEP Conversion (Mayo):")
+        layout.prop(self, "mayo_path", text="Mayo Executable")
+
+        layout.separator()
+
+        # ── Import Wizard thresholds ──────────────────────────────────────
+        layout.label(text="Import Wizard:")
+        col = layout.column(align=True)
+        col.prop(self, "small_part_threshold_mm", text="Small Part Threshold (mm)")
+        col.prop(self, "bim_face_target",         text="Optimise Target Faces")
+        col.prop(self, "max_face_count",           text="Maximum Face Count")

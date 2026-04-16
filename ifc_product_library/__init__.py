@@ -21,16 +21,26 @@ _ADDON_ID: str = __package__
 
 from . import preferences, props
 from .panels import library_browser
-from .operators import browse_ops, insert_ops
+from .operators import browse_ops, insert_ops, import_ops, convert_ops
+from .panels import import_wizard
 
 # All classes that need to be registered with Blender
 _classes = (
     preferences.IFCProductLibraryPreferences,
     props.IFCProductLibraryState,
+    props.IFCLibMetaFormProps,
+    # Phase 1 — Browse & Insert
     browse_ops.IFCLIB_OT_BrowseCategory,
     browse_ops.IFCLIB_OT_SelectProduct,
     browse_ops.IFCLIB_OT_RefreshLibrary,
     insert_ops.IFCLIB_OT_InsertProduct,
+    # Phase 2 — Import Wizard (step operators)
+    *import_ops.classes,
+    # Phase 2 — Import Wizard (save operators)
+    *convert_ops.classes,
+    # Phase 2 — Import Wizard (panel helper operators)
+    *import_wizard.classes,
+    # Panel (must be last — operators it references must already be registered)
     library_browser.IFC_PT_ProductLibrary,
 )
 
@@ -43,6 +53,10 @@ def register():
     bpy.types.Scene.ifc_product_library = bpy.props.PointerProperty(
         type=props.IFCProductLibraryState
     )
+    # Attach the Step 4 metadata form property group to every Scene
+    bpy.types.Scene.ifclib_meta_form = bpy.props.PointerProperty(
+        type=props.IFCLibMetaFormProps
+    )
 
     # Auto-load the library using the current (or default) preferences path
     _try_initial_load()
@@ -54,6 +68,8 @@ def unregister():
 
     if hasattr(bpy.types.Scene, "ifc_product_library"):
         del bpy.types.Scene.ifc_product_library
+    if hasattr(bpy.types.Scene, "ifclib_meta_form"):
+        del bpy.types.Scene.ifclib_meta_form
 
 
 # ---------------------------------------------------------------------------
