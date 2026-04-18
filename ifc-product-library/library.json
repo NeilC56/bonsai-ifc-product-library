@@ -117,6 +117,15 @@
         },
         { "path": "structural/timber", "label": "Timber" },
         {
+          "path": "structural/joists",
+          "label": "Joists",
+          "subcategories": [
+            { "path": "structural/joists/metal-web",    "label": "Metal Web Joists" },
+            { "path": "structural/joists/solid-timber", "label": "Solid Timber Joists" },
+            { "path": "structural/joists/i-joists",     "label": "Engineered I-Joists" }
+          ]
+        },
+        {
           "path": "structural/concrete",
           "label": "Concrete",
           "subcategories": [

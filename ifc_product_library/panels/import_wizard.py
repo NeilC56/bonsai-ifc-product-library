@@ -405,6 +405,45 @@ def _draw_category_tree(layout, cats, w, depth):
 
 
 # ---------------------------------------------------------------------------
+# Step 4 — IFC source: category picker
+# ---------------------------------------------------------------------------
+
+def _draw_ifc_category_picker(layout, w, meta):
+    """Compact category picker shown at the top of Step 4 for IFC-source products.
+
+    Steps 2 and 3 were skipped, so the user must assign a library category
+    here.  Uses the same IFCLIB_OT_WizardSetCategory operator as Step 3, but
+    that operator now detects step == 4 and updates only the category fields
+    in the existing metadata rather than clearing it.
+    """
+    category_path = meta.get("category", {}).get("path", "")
+    box = layout.box()
+
+    if not category_path:
+        header = box.row()
+        header.alert = True
+        header.label(text="Category required — choose one to enable saving", icon="ERROR")
+    else:
+        header = box.row()
+        cat_label = templates.category_path_label(category_path)
+        header.label(text=f"Category: {cat_label}", icon="BOOKMARKS")
+        sub = header.row()
+        sub.scale_x = 0.7
+        sub.label(text="(change below)")
+
+    # IFC class auto-detected from file
+    ifc_class = meta.get("ifc", {}).get("class", "")
+    if ifc_class:
+        info = box.column(align=True)
+        info.scale_y = 0.8
+        info.label(text=f"IFC class detected: {ifc_class}", icon="INFO")
+
+    box.separator(factor=0.3)
+    tree = templates.get_category_tree()
+    _draw_category_tree(box, tree, w, depth=0)
+
+
+# ---------------------------------------------------------------------------
 # Step 4 — Product metadata form
 # ---------------------------------------------------------------------------
 
@@ -413,6 +452,13 @@ def _draw_step4(layout, context, w):
     if not meta:
         layout.label(text="Initialising…", icon="INFO")
         return
+
+    # ── IFC-source: category picker ───────────────────────────────────────
+    # Steps 2 and 3 were skipped for IFC files, so the user must choose a
+    # category here before they can save.
+    if w.get("format") == "IFC":
+        _draw_ifc_category_picker(layout, w, meta)
+        layout.separator(factor=0.5)
 
     # Show any previous save error
     if w.get("save_error"):

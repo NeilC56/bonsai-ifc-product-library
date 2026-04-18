@@ -1,0 +1,61 @@
+{
+  "$schema": "https://example.com/ifc-product-library/v0.1/product.schema.json",
+  "schema_version": "0.1",
+  "identity": {
+    "name": "ipe_100-50",
+    "slug": "ipe-100-50-4",
+    "description": "",
+    "manufacturer": "",
+    "model_number": "",
+    "product_url": ""
+  },
+  "category": {
+    "path": "structural/steel/universal-beams",
+    "tags": []
+  },
+  "ifc": {
+    "class": "IfcBeam",
+    "predefined_type": "BEAM",
+    "ifc_version": "IFC4"
+  },
+  "classification": {
+    "uniclass_2015": {
+      "code": "Pr_20_65_06_93",
+      "description": ""
+    },
+    "omniclass": {
+      "code": "",
+      "description": ""
+    }
+  },
+  "dimensions": {
+    "width_mm": 190.0,
+    "depth_mm": 50.0,
+    "height_mm": 450.0,
+    "weight_kg": 0.0,
+    "unit_system": "metric"
+  },
+  "properties": {
+    "steel_grade": "S355",
+    "section_size": "",
+    "section_weight_kgm": 0.0,
+    "depth_mm": 0.0,
+    "flange_width_mm": 0.0,
+    "web_thickness_mm": 0.0,
+    "material": "Steel - S355"
+  },
+  "compliance": {
+    "doc_m": false,
+    "building_regs": [],
+    "standards": []
+  },
+  "provenance": {
+    "created_date": "2026-04-16",
+    "created_by": "",
+    "geometry_source": "",
+    "geometry_licence": "",
+    "ifc_authored_in": "IFC Product Library addon",
+    "last_modified": "2026-04-16",
+    "library_version": "0.1"
+  }
+}

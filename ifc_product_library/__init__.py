@@ -21,7 +21,7 @@ _ADDON_ID: str = __package__
 
 from . import preferences, props
 from .panels import library_browser
-from .operators import browse_ops, insert_ops, import_ops, convert_ops
+from .operators import browse_ops, insert_ops, import_ops, convert_ops, array_insert_ops
 from .panels import import_wizard
 
 # All classes that need to be registered with Blender
@@ -29,11 +29,14 @@ _classes = (
     preferences.IFCProductLibraryPreferences,
     props.IFCProductLibraryState,
     props.IFCLibMetaFormProps,
+    props.IFCArrayInsertProps,
     # Phase 1 — Browse & Insert
     browse_ops.IFCLIB_OT_BrowseCategory,
     browse_ops.IFCLIB_OT_SelectProduct,
     browse_ops.IFCLIB_OT_RefreshLibrary,
     insert_ops.IFCLIB_OT_InsertProduct,
+    # Phase 3 — Array Insert
+    *array_insert_ops.classes,
     # Phase 2 — Import Wizard (step operators)
     *import_ops.classes,
     # Phase 2 — Import Wizard (save operators)
@@ -57,6 +60,10 @@ def register():
     bpy.types.Scene.ifclib_meta_form = bpy.props.PointerProperty(
         type=props.IFCLibMetaFormProps
     )
+    # Attach the Array Insert property group to every Scene
+    bpy.types.Scene.ifclib_array_insert = bpy.props.PointerProperty(
+        type=props.IFCArrayInsertProps
+    )
 
     # Auto-load the library using the current (or default) preferences path
     _try_initial_load()
@@ -70,6 +77,8 @@ def unregister():
         del bpy.types.Scene.ifc_product_library
     if hasattr(bpy.types.Scene, "ifclib_meta_form"):
         del bpy.types.Scene.ifclib_meta_form
+    if hasattr(bpy.types.Scene, "ifclib_array_insert"):
+        del bpy.types.Scene.ifclib_array_insert
 
 
 # ---------------------------------------------------------------------------

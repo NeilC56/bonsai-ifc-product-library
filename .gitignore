@@ -2,3 +2,9 @@ __pycache__/
 *.pyc
 *.zip
 .DS_Store
+
+# Manufacturer and third-party IFC geometry files.
+# These are derived from external sources with varying licences and must not
+# be redistributed without permission. Download them yourself — see README.
+# The folder structure and product.json metadata files are tracked instead.
+ifc-product-library/**/*.ifc

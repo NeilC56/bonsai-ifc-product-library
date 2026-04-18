@@ -1,0 +1,120 @@
+{
+  "$schema": "https://example.com/ifc-product-library/v0.1/product.schema.json",
+  "schema_version": "0.1",
+  "identity": {
+    "name": "NBS_MiTekIndustriesLtd_MtlWebJsts_PosiJoist:PS8_38x76mm",
+    "slug": "nbs-mitekindustriesltd-mtlwebjsts-posijoist-ps8-38x76mm",
+    "description": "",
+    "manufacturer": "",
+    "model_number": "",
+    "product_url": ""
+  },
+  "category": {
+    "path": "structural/joists/metal-web",
+    "tags": []
+  },
+  "ifc": {
+    "class": "IfcBeam",
+    "predefined_type": "JOIST",
+    "ifc_version": "IFC2X3"
+  },
+  "classification": {
+    "uniclass_2015": {
+      "code": "",
+      "description": ""
+    },
+    "omniclass": {
+      "code": "",
+      "description": ""
+    }
+  },
+  "dimensions": {
+    "width_mm": 0.0,
+    "depth_mm": 0.0,
+    "height_mm": 0.0,
+    "weight_kg": 0.0,
+    "unit_system": "metric"
+  },
+  "properties": {
+    "IfcExportAs": "IfcBeamType",
+    "IfcExportType": "JOIST",
+    "NominalHeight": 0.0,
+    "NominalLength": 0.0,
+    "NominalWidth": 0.0,
+    "AccessibilityPerformance": "n/a",
+    "AssetType": "Fixed",
+    "Category": "Pr_20_85_08_50:Metal web joists",
+    "Color": "n/a",
+    "Finish": "Natural",
+    "Material": "Timber,Steel",
+    "Shape": "Rectangle",
+    "Size": "n/a",
+    "WarrantyDescription": "60 year",
+    "CodePerformance": "n/a",
+    "Constituents": "n/a",
+    "Description": "Posi-Joist combines the lightness of timber with the strength of the Posi-Strut steel web, allowing you to span far greater distances than would be possible with alternative timber products.",
+    "DurationUnit": "year",
+    "ExpectedLife": "n/a",
+    "Features": "Long spans, open web design, lightweight construction, wide fixing surface, good acoustic performance, wide range of end details",
+    "Grade": "n/a",
+    "Manufacturer": "info@mitek.co.uk",
+    "ModelNumber": "n/a",
+    "ModelReference": "Posi Joist",
+    "Name": "MetalWebJoists_PosiJoist_PS8_38x76mm_MiTekIndustriesLtd",
+    "ReplacementCost": "n/a",
+    "SustainabilityPerformance": "n/a",
+    "WarrantyDurationLabor": "n/a",
+    "WarrantyDurationParts": "n/a",
+    "WarrantyDurationUnit": "year",
+    "WarrantyGuarantorLabor": "n/a",
+    "WarrantyGuarantorParts": "n/a",
+    "Author": "NBS",
+    "BIMObjectName": "NBS_MiTekIndustriesLtd_MetalWebJoists_PosiJoist_PS8_38x76mm",
+    "ManufacturerName": "MiTek Industries Ltd",
+    "ManufacturerURL": "www.mitek.co.uk",
+    "NBSInstanceId": "ae00eb9d-f6dd-47cc-9746-f0250523a94a",
+    "NBSObjectId": "0a6cc388-ff87-1a8e-81b2-461d5cbc37e2",
+    "NBSVariantId": "07649e8f-b8f5-bd24-cec0-5760e3ac90ae",
+    "ProductInformation": "https://source.thenbs.com/product/-/0a6cc388-ff87-1a8e-81b2-461d5cbc37e2/ae00eb9d-f6dd-47cc-9746-f0250523a94a",
+    "Uniclass2015Code": "Pr_20_85_08_50",
+    "Uniclass2015Title": "Metal web joists",
+    "Uniclass2015Version": "Products v1.35",
+    "Version": "14",
+    "ContainsRedListMaterials": "No",
+    "CountryOfMaterialOrigin": "Europe",
+    "CountryOfProductManufacture": "United Kingdom",
+    "EmbodiedCarbon": "2.28",
+    "Recyclability": "In theory 100%",
+    "FactoryFinish": "Natural (timber)",
+    "Clearance": "108 mm",
+    "SizeDepth": "202 mm",
+    "SizeOverallWidth": "60 mm,70 mm,72 mm,80 mm,95 mm,97 mm,114 mm,120 mm,122 mm,140 mm,145 mm,147 mm,152 mm,160 mm,170 mm,195 mm,220 mm,228 mm",
+    "SizeHeight": "38 mm,45 mm,47 mm,48 mm,50 mm,60 mm,70 mm,76 mm,80 mm",
+    "AssetIdentifier": "n/a",
+    "BarCode": "n/a",
+    "InstallationDate": "1900-12-31T23:59:59",
+    "SerialNumber": "n/a",
+    "TagNumber": "n/a",
+    "WarrantyStartDate": "1900-12-31T23:59:59",
+    "depth_mm": 0.0,
+    "span_max_mm": 0.0,
+    "spacing_mm": 0.0,
+    "fire_rating_minutes": 0.0,
+    "load_capacity_kn_m": 0.0,
+    "acoustic_rating_db": 0.0
+  },
+  "compliance": {
+    "doc_m": false,
+    "building_regs": [],
+    "standards": []
+  },
+  "provenance": {
+    "created_date": "2026-04-17",
+    "created_by": "",
+    "geometry_source": "Manufacturer IFC file: NBS_MiTekIndustriesLtd_MtlWebJsts_PosiJoist.ifc",
+    "geometry_licence": "",
+    "ifc_authored_in": "IFC2X3",
+    "last_modified": "2026-04-17",
+    "library_version": "0.1"
+  }
+}

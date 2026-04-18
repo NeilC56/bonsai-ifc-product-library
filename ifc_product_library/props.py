@@ -81,6 +81,11 @@ class IFCLibMetaFormProps(bpy.types.PropertyGroup):
     tp_depth_mm:            bpy.props.FloatProperty(name="Depth (mm)",            min=0, precision=1)
     tp_flange_width_mm:     bpy.props.FloatProperty(name="Flange Width (mm)",     min=0, precision=1)
     tp_web_thickness_mm:    bpy.props.FloatProperty(name="Web Thickness (mm)",    min=0, precision=2)
+    # Joists (metal-web, solid timber, i-joists)
+    tp_span_max_mm:         bpy.props.FloatProperty(name="Max Clear Span (mm)",   min=0, precision=0, step=1000)
+    tp_spacing_mm:          bpy.props.FloatProperty(name="Centres (mm)",          min=0, precision=0, step=100)
+    tp_fire_rating_minutes: bpy.props.FloatProperty(name="Fire Rating (min)",     min=0, precision=0, step=3000)
+    tp_load_capacity_kn_m:  bpy.props.FloatProperty(name="Load Capacity (kN/m)", min=0, precision=2)
 
     # ── Template property bools ──────────────────────────────────────────────
     # Sanitaryware
@@ -122,6 +127,7 @@ _TP_FLOAT_ATTRS = (
     "tp_lambda_value", "tp_density_kgm3",
     "tp_diameter_mm", "tp_load_rating_kg",
     "tp_section_weight_kgm", "tp_depth_mm", "tp_flange_width_mm", "tp_web_thickness_mm",
+    "tp_span_max_mm", "tp_spacing_mm", "tp_fire_rating_minutes", "tp_load_capacity_kn_m",
 )
 
 _TP_BOOL_ATTRS = (
@@ -132,6 +138,128 @@ _TP_BOOL_ATTRS = (
     "tp_fold_down", "tp_doc_m", "tp_ambulant", "tp_raised_height",
 )
 
+
+# ---------------------------------------------------------------------------
+# Phase 3 — Array Insert property group
+# ---------------------------------------------------------------------------
+
+def _load_case_items(self, context):
+    """Enum callback that returns load case items from the active span table.
+
+    Always returns at least one sentinel item to prevent Blender from
+    crashing on an empty enum.
+    """
+    try:
+        from .core import span_tables, library_index
+        pg = context.scene.ifclib_array_insert
+        lib_path = library_index.get_index().get("library_path", "")
+        tbl = span_tables.load_span_table(lib_path, pg.active_span_table)
+        if tbl:
+            cases = tbl.get("load_cases", [])
+            if cases:
+                return [(lc["key"], lc["name"], lc.get("description", "")) for lc in cases]
+    except Exception:
+        pass
+    return [("none", "—", "")]
+
+
+class IFCArrayInsertProps(bpy.types.PropertyGroup):
+    """Parameters for the Array Insert mode (beam/joist products only).
+
+    Registered as ``bpy.types.Scene.ifclib_array_insert``.
+    All mutable state is written only from operator execute() methods —
+    never from panel draw functions (Blender 5.x constraint).
+    """
+
+    placement_mode: bpy.props.EnumProperty(
+        name="Placement Mode",
+        items=[
+            ("SINGLE", "Single", "Insert one instance at the 3D cursor"),
+            ("ARRAY",  "Array",  "Insert a row of joists at regular centres"),
+        ],
+        default="SINGLE",
+    )
+
+    beam_length_mm: bpy.props.FloatProperty(
+        name="Beam Length (mm)",
+        description=(
+            "Length of each beam/joist (perpendicular to the array direction). "
+            "Typically the clear span plus bearing at each end."
+        ),
+        default=6000.0,
+        min=100.0,
+        precision=0,
+    )
+
+    spacing_mm: bpy.props.FloatProperty(
+        name="Spacing (mm)",
+        description="Centre-to-centre spacing between joists in the array direction",
+        default=600.0,
+        min=50.0,
+        precision=0,
+    )
+
+    span_length_mm: bpy.props.FloatProperty(
+        name="Span Length (mm)",
+        description="Total distance to fill in the array direction (e.g. room width)",
+        default=4800.0,
+        min=100.0,
+        precision=0,
+    )
+
+    start_offset_mm: bpy.props.FloatProperty(
+        name="Start Offset (mm)",
+        description="Gap between the cursor/wall and the first joist (array direction)",
+        default=20.0,
+        min=0.0,
+        precision=0,
+    )
+
+    end_offset_mm: bpy.props.FloatProperty(
+        name="End Offset (mm)",
+        description="Gap between the last joist and the far wall (array direction)",
+        default=20.0,
+        min=0.0,
+        precision=0,
+    )
+
+    array_direction: bpy.props.EnumProperty(
+        name="Array Direction",
+        items=[
+            ("X", "Along X", "Space joists along the X axis (joists run parallel to Y)"),
+            ("Y", "Along Y", "Space joists along the Y axis (joists run parallel to X)"),
+        ],
+        default="X",
+    )
+
+    odd_at_start: bpy.props.BoolProperty(
+        name="Odd gap at start",
+        description="Place the uneven spacing gap at the start rather than the end",
+        default=False,
+    )
+
+    show_span_advisory: bpy.props.BoolProperty(
+        name="Span Advisory",
+        description="Show the span advisory section",
+        default=True,
+    )
+
+    active_span_table: bpy.props.StringProperty(
+        name="Active Span Table",
+        description="Filename of the active span table (e.g. mitek-posijoist.json)",
+        default="",
+    )
+
+    load_case: bpy.props.EnumProperty(
+        name="Load Case",
+        description="Load case from the active span table",
+        items=_load_case_items,
+    )
+
+
+# ---------------------------------------------------------------------------
+# Phase 2 — Step 4 helpers
+# ---------------------------------------------------------------------------
 
 def load_meta_to_pg(context, meta: dict) -> None:
     """Copy wizard metadata float/bool values into IFCLibMetaFormProps.

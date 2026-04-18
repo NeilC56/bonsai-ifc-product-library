@@ -7,6 +7,7 @@ Operators for Step 4 (Save to Library):
 """
 
 import os
+import shutil
 import bpy
 from bpy.props import BoolProperty
 
@@ -64,6 +65,11 @@ def _do_save(operator) -> tuple[bool, str]:
     """Execute the full save pipeline. Returns (success, product_slug_or_error)."""
     w = wizard_state.get_wizard()
     meta = w.get("metadata", {})
+
+    # Route IFC-source products to a different pipeline: copy the file rather
+    # than creating one from Blender mesh geometry.
+    if w.get("format") == "IFC" and w.get("file_path"):
+        return _do_save_ifc_source(w, meta)
 
     # ------------------------------------------------------------------
     # Validate metadata
@@ -147,18 +153,97 @@ def _do_save(operator) -> tuple[bool, str]:
     # ------------------------------------------------------------------
     # Write product.json
     # ------------------------------------------------------------------
-    json_path = os.path.join(product_folder, "product.json")
     try:
         meta_utils.write_product_json(product_folder, meta)
     except Exception as e:
-        # Clean up the IFC file if JSON write failed
         if os.path.exists(ifc_path):
             os.remove(ifc_path)
-        if os.path.exists(product_folder):
-            try:
-                os.rmdir(product_folder)
-            except OSError:
-                pass
+        try:
+            os.rmdir(product_folder)
+        except OSError:
+            pass
+        return False, f"JSON write failed: {e}"
+
+    # ------------------------------------------------------------------
+    # Refresh library index
+    # ------------------------------------------------------------------
+    try:
+        library_index.load_library(library_path)
+    except Exception as e:
+        print(f"IFC Product Library: index refresh failed after save: {e}")
+
+    return True, f"{category_path}/{slug}"
+
+
+def _do_save_ifc_source(w: dict, meta: dict) -> tuple[bool, str]:
+    """Save pipeline for IFC-source products.
+
+    Copies the original manufacturer IFC file as product.ifc rather than
+    generating one from Blender mesh geometry.  The file is assumed to already
+    be valid IFC — we don't re-export it.
+    """
+    # ------------------------------------------------------------------
+    # Validate metadata
+    # ------------------------------------------------------------------
+    errors = meta_utils.validate_metadata(meta)
+    if errors:
+        return False, "Metadata incomplete:\n  " + "\n  ".join(errors)
+
+    src_ifc = w.get("file_path", "")
+    if not src_ifc or not os.path.isfile(src_ifc):
+        return False, f"Source IFC file not found: {src_ifc!r}"
+
+    # ------------------------------------------------------------------
+    # Library path and category folder
+    # ------------------------------------------------------------------
+    library_path = _get_library_path()
+    if not library_path or not os.path.isdir(library_path):
+        return False, f"Library path not set or doesn't exist: {library_path!r}"
+
+    category_path = meta.get("category", {}).get("path", "")
+    if not category_path:
+        return False, "No category selected — choose a category in the form above"
+
+    category_folder = os.path.join(library_path, category_path.replace("/", os.sep))
+    os.makedirs(category_folder, exist_ok=True)
+
+    # ------------------------------------------------------------------
+    # Generate unique slug and create product folder
+    # ------------------------------------------------------------------
+    product_name = meta["identity"]["name"].strip()
+    base_slug = meta_utils.slugify(product_name)
+    slug = meta_utils.unique_slug(base_slug, category_folder)
+    meta["identity"]["slug"] = slug
+    meta["category"]["path"] = category_path
+
+    product_folder = os.path.join(category_folder, slug)
+    os.makedirs(product_folder, exist_ok=True)
+
+    # ------------------------------------------------------------------
+    # Copy source IFC file → product.ifc
+    # ------------------------------------------------------------------
+    dst_ifc = os.path.join(product_folder, "product.ifc")
+    try:
+        shutil.copy2(src_ifc, dst_ifc)
+    except Exception as e:
+        try:
+            os.rmdir(product_folder)
+        except OSError:
+            pass
+        return False, f"Failed to copy IFC file: {e}"
+
+    # ------------------------------------------------------------------
+    # Write product.json
+    # ------------------------------------------------------------------
+    try:
+        meta_utils.write_product_json(product_folder, meta)
+    except Exception as e:
+        if os.path.exists(dst_ifc):
+            os.remove(dst_ifc)
+        try:
+            os.rmdir(product_folder)
+        except OSError:
+            pass
         return False, f"JSON write failed: {e}"
 
     # ------------------------------------------------------------------

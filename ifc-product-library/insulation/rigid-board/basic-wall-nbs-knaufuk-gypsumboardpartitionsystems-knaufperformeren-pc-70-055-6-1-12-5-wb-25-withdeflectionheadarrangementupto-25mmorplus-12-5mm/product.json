@@ -1,0 +1,59 @@
+{
+  "$schema": "https://example.com/ifc-product-library/v0.1/product.schema.json",
+  "schema_version": "0.1",
+  "identity": {
+    "name": "Basic Wall:NBS_KnaufUK_GypsumBoardPartitionSystems_KnaufPerformerEN-PC-70-055-6-1-12.5-WB-25_WithDeflectionHeadArrangementUpTo-25mmOrPlus-12.5mm",
+    "slug": "basic-wall-nbs-knaufuk-gypsumboardpartitionsystems-knaufperformeren-pc-70-055-6-1-12-5-wb-25-withdeflectionheadarrangementupto-25mmorplus-12-5mm",
+    "description": "",
+    "manufacturer": "Knauf",
+    "model_number": "",
+    "product_url": ""
+  },
+  "category": {
+    "path": "insulation/rigid-board",
+    "tags": []
+  },
+  "ifc": {
+    "class": "IfcBuildingElementPart",
+    "predefined_type": "NOTDEFINED",
+    "ifc_version": "IFC2X3"
+  },
+  "classification": {
+    "uniclass_2015": {
+      "code": "",
+      "description": ""
+    },
+    "omniclass": {
+      "code": "",
+      "description": ""
+    }
+  },
+  "dimensions": {
+    "width_mm": 0.0,
+    "depth_mm": 0.0,
+    "height_mm": 0.0,
+    "weight_kg": 0.0,
+    "unit_system": "metric"
+  },
+  "properties": {
+    "tap_holes": 0.0,
+    "overflow": false,
+    "outlet_diameter_mm": 0.0,
+    "lambda_value": 0.0,
+    "faced": false
+  },
+  "compliance": {
+    "doc_m": false,
+    "building_regs": [],
+    "standards": []
+  },
+  "provenance": {
+    "created_date": "2026-04-17",
+    "created_by": "",
+    "geometry_source": "Manufacturer IFC file: NBS_KnaufUK_GypBrdPrtnSystms_KnaufPerformerEN-PC-70-055-6-1-125-WB-25.ifc",
+    "geometry_licence": "",
+    "ifc_authored_in": "IFC2X3",
+    "last_modified": "2026-04-17",
+    "library_version": "0.1"
+  }
+}

@@ -584,6 +584,63 @@ _TEMPLATES: dict[str, dict] = {
         "uniclass_hint": "Pr_20_65_06_16",
     },
 
+    # ── Joists ───────────────────────────────────────────────────────────────
+
+    "structural/joists/metal-web": {
+        "ifc_class": "IfcBeam",
+        "predefined_type": "JOIST",
+        "properties": [
+            {"key": "manufacturer",          "label": "Manufacturer",           "type": "str",   "default": ""},
+            {"key": "system",                "label": "System",                 "type": "str",   "default": ""},
+            {"key": "depth_mm",              "label": "Depth",                  "type": "float", "default": 0.0,  "unit": "mm"},
+            {"key": "span_max_mm",           "label": "Max Clear Span",         "type": "float", "default": 0.0,  "unit": "mm"},
+            {"key": "spacing_mm",            "label": "Typical Centres",        "type": "float", "default": 400.0,"unit": "mm"},
+            {"key": "top_chord",             "label": "Top Chord",              "type": "str",   "default": ""},
+            {"key": "bottom_chord",          "label": "Bottom Chord",           "type": "str",   "default": ""},
+            {"key": "web_type",              "label": "Web Type",               "type": "str",   "default": "Pressed steel V-web"},
+            {"key": "fire_rating_minutes",   "label": "Fire Rating",            "type": "int",   "default": 0,    "unit": "min"},
+            {"key": "load_capacity_kn_m",    "label": "Load Capacity (UDL)",    "type": "float", "default": 0.0,  "unit": "kN/m"},
+            {"key": "acoustic_rating_db",    "label": "Acoustic Rating",        "type": "float", "default": 0.0,  "unit": "dB"},
+            {"key": "material",              "label": "Material",               "type": "str",   "default": "Timber/Steel hybrid"},
+        ],
+        "uniclass_hint": "Pr_20_65_28_48",
+    },
+
+    "structural/joists/solid-timber": {
+        "ifc_class": "IfcBeam",
+        "predefined_type": "JOIST",
+        "properties": [
+            {"key": "timber_class",          "label": "Strength Class",         "type": "enum",
+             "options": ["C16", "C24", "C27", "C35"], "default": "C24"},
+            {"key": "section_size",          "label": "Section Size",           "type": "str",   "default": ""},
+            {"key": "depth_mm",              "label": "Depth",                  "type": "float", "default": 0.0,  "unit": "mm"},
+            {"key": "span_max_mm",           "label": "Max Clear Span",         "type": "float", "default": 0.0,  "unit": "mm"},
+            {"key": "spacing_mm",            "label": "Typical Centres",        "type": "float", "default": 400.0,"unit": "mm"},
+            {"key": "treatment",             "label": "Treatment",              "type": "enum",
+             "options": ["None", "Tanalised", "Fire retardant", "Other"], "default": "None"},
+            {"key": "material",              "label": "Material",               "type": "str",   "default": "Timber"},
+        ],
+        "uniclass_hint": "Pr_20_65_28_77",
+    },
+
+    "structural/joists/i-joists": {
+        "ifc_class": "IfcBeam",
+        "predefined_type": "JOIST",
+        "properties": [
+            {"key": "manufacturer",          "label": "Manufacturer",           "type": "str",   "default": ""},
+            {"key": "system",                "label": "System",                 "type": "str",   "default": ""},
+            {"key": "depth_mm",              "label": "Depth",                  "type": "float", "default": 0.0,  "unit": "mm"},
+            {"key": "span_max_mm",           "label": "Max Clear Span",         "type": "float", "default": 0.0,  "unit": "mm"},
+            {"key": "spacing_mm",            "label": "Typical Centres",        "type": "float", "default": 400.0,"unit": "mm"},
+            {"key": "flange_material",       "label": "Flange Material",        "type": "str",   "default": ""},
+            {"key": "web_material",          "label": "Web Material",           "type": "str",   "default": "OSB"},
+            {"key": "fire_rating_minutes",   "label": "Fire Rating",            "type": "int",   "default": 0,    "unit": "min"},
+            {"key": "load_capacity_kn_m",    "label": "Load Capacity (UDL)",    "type": "float", "default": 0.0,  "unit": "kN/m"},
+            {"key": "material",              "label": "Material",               "type": "str",   "default": "Engineered timber"},
+        ],
+        "uniclass_hint": "Pr_20_65_28_44",
+    },
+
     "accessibility/accessible-wc": {
         "ifc_class": "IfcSanitaryTerminal",
         "predefined_type": "TOILETPAN",
@@ -772,6 +829,11 @@ _STATIC_CATEGORY_TREE = [
             {"path": "structural/steel/hollow-sections",   "label": "Hollow Sections"},
         ]},
         {"path": "structural/timber", "label": "Timber"},
+        {"path": "structural/joists", "label": "Joists", "subcategories": [
+            {"path": "structural/joists/metal-web",    "label": "Metal Web Joists"},
+            {"path": "structural/joists/solid-timber", "label": "Solid Timber Joists"},
+            {"path": "structural/joists/i-joists",     "label": "Engineered I-Joists"},
+        ]},
         {"path": "structural/concrete", "label": "Concrete", "subcategories": [
             {"path": "structural/concrete/precast",  "label": "Precast"},
             {"path": "structural/concrete/lintels",  "label": "Lintels"},

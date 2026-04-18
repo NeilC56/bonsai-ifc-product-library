@@ -1,0 +1,61 @@
+{
+  "manufacturer": "MiTek Industries Ltd",
+  "system": "PosiJoist",
+  "source": "MiTek PosiJoist Technical Guide 2024 (approximate — advisory only)",
+  "_note": "Values are APPROXIMATE for preliminary design only. Always verify with current manufacturer span tables and a qualified structural engineer. Actual capacity depends on loading, support conditions, service penetrations, and site-specific factors.",
+  "disclaimer": "Advisory only — structural design must be verified by a qualified structural engineer",
+  "load_cases": [
+    {
+      "name": "Domestic floor",
+      "key": "domestic_floor",
+      "imposed_load_kN_m2": 1.5,
+      "dead_load_kN_m2": 0.25,
+      "description": "Typical domestic floor to BS EN 1991-1-1"
+    },
+    {
+      "name": "Domestic roof (non-habitable)",
+      "key": "domestic_roof",
+      "imposed_load_kN_m2": 0.75,
+      "dead_load_kN_m2": 0.15,
+      "description": "Cold roof, access for maintenance only"
+    }
+  ],
+  "sections": [
+    {
+      "depth_mm": 195,
+      "top_chord": "47x97 C24",
+      "bottom_chord": "47x97 C24",
+      "spans": {
+        "domestic_floor": { "400": 3800, "450": 3600, "600": 3200 },
+        "domestic_roof":  { "400": 5200, "450": 4900, "600": 4500 }
+      }
+    },
+    {
+      "depth_mm": 220,
+      "top_chord": "47x97 C24",
+      "bottom_chord": "47x97 C24",
+      "spans": {
+        "domestic_floor": { "400": 5200, "450": 4900, "600": 4800 },
+        "domestic_roof":  { "400": 6200, "450": 5900, "600": 5400 }
+      }
+    },
+    {
+      "depth_mm": 245,
+      "top_chord": "47x97 C24",
+      "bottom_chord": "47x97 C24",
+      "spans": {
+        "domestic_floor": { "400": 5800, "450": 5500, "600": 5400 },
+        "domestic_roof":  { "400": 7000, "450": 6600, "600": 6100 }
+      }
+    },
+    {
+      "depth_mm": 254,
+      "top_chord": "47x97 C24",
+      "bottom_chord": "47x97 C24",
+      "spans": {
+        "domestic_floor": { "400": 6100, "450": 5900, "600": 5700 },
+        "domestic_roof":  { "400": 7400, "450": 7000, "600": 6500 }
+      }
+    }
+  ]
+}

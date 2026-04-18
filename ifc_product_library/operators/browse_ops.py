@@ -57,6 +57,10 @@ class IFCLIB_OT_RefreshLibrary(bpy.types.Operator):
 
         library_index.load_library(lib_path)
 
+        # Clear span table cache so stale data is not shown after a reload
+        from ..core import span_tables as _st
+        _st.invalidate_cache()
+
         index = library_index.get_index()
         if index["error"]:
             self.report({"ERROR"}, index["error"])

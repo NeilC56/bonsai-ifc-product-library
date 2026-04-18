@@ -127,7 +127,11 @@ class IFCLIB_OT_WizardNext(bpy.types.Operator):
         if step == 1:
             if w["source_mode"] == "file" and not w["file_path"]:
                 return "Please select a file first"
-            if w["source_mode"] == "file" and not w["imported_object_names"]:
+            # IFC files don't get imported into the viewport — skip the
+            # imported_object_names check for them.
+            if (w["source_mode"] == "file"
+                    and not w["imported_object_names"]
+                    and w.get("format") != "IFC"):
                 return "File not yet imported — click the format button first"
             if w["source_mode"] == "selected" and not w["imported_object_names"]:
                 return "No objects tagged — select objects and click 'Use Selected'"
@@ -150,6 +154,13 @@ def _prefill_metadata(w: dict) -> None:
     """Pre-fill the metadata dict when entering step 4."""
     if w.get("metadata"):
         return  # already set
+
+    # IFC source: parse the file for metadata instead of using Blender geometry
+    if w.get("format") == "IFC" and w.get("file_path"):
+        _prefill_metadata_from_ifc(w)
+        return
+
+    # Standard flow: template defaults + bounding box dimensions
     tmpl = meta_utils.product_json_template(w.get("category_path", ""))
     tmpl["ifc"]["class"] = w.get("ifc_class", "")
     tmpl["ifc"]["predefined_type"] = w.get("predefined_type", "")
@@ -169,6 +180,184 @@ def _prefill_metadata(w: dict) -> None:
         tmpl["properties"][field["key"]] = field.get("default", "")
 
     w["metadata"] = tmpl
+
+
+def _prefill_metadata_from_ifc(w: dict) -> None:
+    """Pre-fill metadata by parsing the source IFC file.
+
+    Extracts product name, IFC class, predefined type, unit-aware dimensions,
+    and property set values.  Falls back gracefully if ifcopenshell fails.
+    Category path is intentionally left blank — the user must select one in
+    Step 4 before saving.
+    """
+    file_path = w["file_path"]
+    tmpl = meta_utils.product_json_template("")   # blank template, no category yet
+
+    extracted = _extract_ifc_metadata(file_path)
+
+    # Identity
+    if extracted.get("name"):
+        tmpl["identity"]["name"] = extracted["name"]
+
+    # IFC class + predefined type
+    ifc_class = extracted.get("ifc_class", "IfcBuildingElementProxy")
+    predefined_type = extracted.get("predefined_type", "NOTDEFINED")
+    tmpl["ifc"]["class"] = ifc_class
+    tmpl["ifc"]["predefined_type"] = predefined_type
+    tmpl["ifc"]["ifc_version"] = extracted.get("ifc_version", "IFC4")
+
+    # Mirror onto wizard state so step 4 info labels are populated
+    w["ifc_class"] = ifc_class
+    w["predefined_type"] = predefined_type
+
+    # Dimensions from IFC quantity sets
+    if extracted.get("dimensions"):
+        tmpl["dimensions"].update(extracted["dimensions"])
+
+    # Properties from IFC property sets (use as-is, not a blank template)
+    if extracted.get("psets"):
+        tmpl["properties"].update(extracted["psets"])
+
+    # Provenance — record that this came from a manufacturer IFC download
+    import os
+    tmpl["provenance"]["geometry_source"] = (
+        f"Manufacturer IFC file: {os.path.basename(file_path)}"
+    )
+    tmpl["provenance"]["ifc_authored_in"] = extracted.get("ifc_version", "IFC4")
+
+    w["metadata"] = tmpl
+
+
+# ---------------------------------------------------------------------------
+# IFC file metadata extraction helpers
+# ---------------------------------------------------------------------------
+
+_IFC_SPATIAL_CLASSES = frozenset({
+    "IfcProject", "IfcSite", "IfcBuilding",
+    "IfcBuildingStorey", "IfcSpace", "IfcExternalSpatialElement",
+})
+
+
+def _extract_ifc_metadata(file_path: str) -> dict:
+    """Open an IFC file with ifcopenshell and extract key product metadata.
+
+    Returns a dict with any subset of:
+        name, ifc_class, predefined_type, ifc_version, dimensions, psets
+
+    Never raises — falls back to an empty dict on any error.
+    """
+    result = {}
+    try:
+        import ifcopenshell
+        import ifcopenshell.util.unit
+
+        model = ifcopenshell.open(file_path)
+        result["ifc_version"] = model.schema  # e.g. "IFC4" or "IFC2X3"
+
+        # Unit scale to convert raw IFC values → metres
+        try:
+            unit_scale = ifcopenshell.util.unit.calculate_unit_scale(model)
+        except Exception:
+            unit_scale = 1.0  # assume metres if we can't determine units
+
+        # --- Primary entity -------------------------------------------------
+        # Prefer the TypeProduct (the library definition); fall back to the
+        # first non-spatial occurrence.
+        entity = None
+        for tp in model.by_type("IfcTypeProduct"):
+            entity = tp
+            break
+        if entity is None:
+            for prod in model.by_type("IfcProduct"):
+                if prod.is_a() not in _IFC_SPATIAL_CLASSES:
+                    entity = prod
+                    break
+
+        if entity is None:
+            return result
+
+        if entity.Name:
+            result["name"] = str(entity.Name)
+
+        result["ifc_class"] = entity.is_a()
+        try:
+            pt = entity.PredefinedType
+            if pt and pt not in ("NOTDEFINED", "USERDEFINED"):
+                result["predefined_type"] = str(pt)
+        except AttributeError:
+            pass
+
+        # --- Property sets --------------------------------------------------
+        psets = {}
+        _collect_psets(entity, psets)
+        # Also scan first non-spatial occurrence for psets not on the type
+        for prod in model.by_type("IfcProduct"):
+            if prod.is_a() not in _IFC_SPATIAL_CLASSES and prod is not entity:
+                _collect_psets(prod, psets)
+                break
+        if psets:
+            result["psets"] = psets
+
+        # --- Dimensions from quantity sets -----------------------------------
+        dims = {}
+        _collect_quantity_dims(model, unit_scale, dims)
+        if dims:
+            result["dimensions"] = dims
+
+    except Exception as exc:
+        print(f"IFC Product Library: _extract_ifc_metadata failed: {exc}")
+
+    return result
+
+
+def _collect_psets(entity, psets: dict) -> None:
+    """Append IfcPropertySingleValue entries from all psets on entity."""
+    try:
+        # TypeProduct exposes HasPropertySets directly
+        for pset in getattr(entity, "HasPropertySets", None) or []:
+            if pset.is_a("IfcPropertySet"):
+                for prop in pset.HasProperties:
+                    if prop.is_a("IfcPropertySingleValue") and prop.NominalValue is not None:
+                        psets[prop.Name] = prop.NominalValue.wrappedValue
+        # Occurrence: traverse IsDefinedBy relationships
+        for rel in getattr(entity, "IsDefinedBy", None) or []:
+            if rel.is_a("IfcRelDefinesByProperties"):
+                pset_def = rel.RelatingPropertyDefinition
+                if pset_def.is_a("IfcPropertySet"):
+                    for prop in pset_def.HasProperties:
+                        if prop.is_a("IfcPropertySingleValue") and prop.NominalValue is not None:
+                            psets[prop.Name] = prop.NominalValue.wrappedValue
+    except Exception:
+        pass
+
+
+def _collect_quantity_dims(model, unit_scale: float, dims: dict) -> None:
+    """Populate dims from IfcElementQuantity → IfcQuantityLength entries."""
+    try:
+        for prod in model.by_type("IfcProduct"):
+            if prod.is_a() in _IFC_SPATIAL_CLASSES:
+                continue
+            for rel in getattr(prod, "IsDefinedBy", None) or []:
+                if not rel.is_a("IfcRelDefinesByProperties"):
+                    continue
+                qset = rel.RelatingPropertyDefinition
+                if not qset.is_a("IfcElementQuantity"):
+                    continue
+                for q in qset.Quantities:
+                    if not q.is_a("IfcQuantityLength"):
+                        continue
+                    val_mm = round(q.LengthValue * unit_scale * 1000, 1)
+                    name_lc = q.Name.lower()
+                    if "width" in name_lc or "breadth" in name_lc:
+                        dims.setdefault("width_mm", val_mm)
+                    elif "depth" in name_lc:
+                        dims.setdefault("depth_mm", val_mm)
+                    elif "length" in name_lc and "depth_mm" not in dims:
+                        dims.setdefault("depth_mm", val_mm)
+                    elif "height" in name_lc:
+                        dims.setdefault("height_mm", val_mm)
+    except Exception:
+        pass
 
 
 def _get_max_face_count() -> int:
@@ -695,8 +884,20 @@ class IFCLIB_OT_WizardSetCategory(bpy.types.Operator):
         w["category_path"] = self.category_path
         w["ifc_class"] = templates.get_ifc_class(self.category_path)
         w["predefined_type"] = templates.get_predefined_type(self.category_path)
-        # Clear any previously pre-filled metadata so it gets re-generated on step 4
-        w["metadata"] = {}
+
+        if w["step"] == 4:
+            # Called from the Step 4 category picker (IFC source mode).
+            # Update only the category fields in the existing metadata so that
+            # IFC-extracted data (name, psets, dimensions) is preserved.
+            meta = w.get("metadata", {})
+            if meta:
+                meta.setdefault("category", {})["path"] = self.category_path
+                meta.setdefault("ifc", {})["class"] = w["ifc_class"]
+                meta.setdefault("ifc", {})["predefined_type"] = w["predefined_type"]
+        else:
+            # Steps 1–3: clear so that metadata is regenerated fresh on step 4
+            w["metadata"] = {}
+
         _redraw_panels()
         return {"FINISHED"}
 
