@@ -258,12 +258,18 @@ Click **Save to Library** to write `product.ifc` and `product.json`, or **Save &
 
 | Component | Licence |
 |---|---|
-| Addon source code (`ifc_product_library/`) | MIT |
-| Library structure and tooling | MIT |
-| Product IFC files authored from scratch | CC BY 4.0 — attribution required |
-| Product IFC files derived from manufacturer geometry | As per source licence, recorded in `source/source.json` |
+| Addon source code (`ifc_product_library/`) | [MIT](LICENSE) |
+| Library content (`product.json` metadata, span tables, category templates) | [CC BY 4.0](LICENSE-CONTENT) |
+| Manufacturer IFC geometry files | Not included — subject to original download terms |
+| Geometry from third-party sources (GrabCAD, TraceParts, etc.) | Subject to original source licence, recorded in each product's `product.json` provenance fields |
 
-Products with licences that prohibit redistribution are marked in their `product.json` and excluded from public library releases.
+**Addon code** (`ifc_product_library/`) is MIT-licensed — use it freely in your own projects.
+
+**Library content** (the `product.json` metadata files, span table JSON files, and category templates) is licensed under [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/). You can share and adapt it for any purpose, including commercially, provided you give appropriate credit.
+
+**Manufacturer IFC geometry files** (`product.ifc`) are not included in this repository. They are downloaded separately from manufacturer portals (BIMobject, NBS National BIM Library, manufacturer websites) and are subject to each manufacturer's own terms of use. See [Adding manufacturer IFC files](#adding-manufacturer-ifc-files).
+
+**Geometry from third-party sources** (GrabCAD, TraceParts, BIMobject-derived meshes, etc.) is subject to the licence of the original source. The source and licence are recorded in each product's `product.json` under `provenance.geometry_source` and `provenance.geometry_licence`.
 
 ---
 
